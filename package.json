@@ -2,7 +2,8 @@
 	"dependencies": {
 		"express": "x",
 		"ejs": "x",
-		"body-parser": "*"
+		"body-parser": "*",
+        "mongoose": "*"
 	},
 	"scripts": {
 		"start": "node app.js"

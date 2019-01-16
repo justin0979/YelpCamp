@@ -1,8 +1,8 @@
-version: '3'
+version: '3.2'
 services:
     yelpcamp:
         build:
-            dockerfile: dockerfile.dev
+            dockerfile: Dockerfile.dev
             context: .
         volumes:
             - /app/node_modules
@@ -12,6 +12,8 @@ services:
     mongo:
         image: mongo:3.6.9
         command: --smallfiles
+        ports:
+            - 27017:27017
         volumes:
             - type: volume
               source: mongo_db
