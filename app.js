@@ -15,14 +15,16 @@ app.use(express.static('public'));
 
 let campgroundSchema = new mongoose.Schema({
     name: String,
-    image: String
+    image: String,
+    description: String
 });
 
 let Campground = mongoose.model("Campground", campgroundSchema);
 /*
 Campground.create({
     name: "Mountain Goat Pass",
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJiZz-OBNf8A08S6XT0fhJCQQM3Kq3JndXQ8IWdsEJ6js5U-1e' 
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJiZz-OBNf8A08S6XT0fhJCQQM3Kq3JndXQ8IWdsEJ6js5U-1e' ,
+    description: "This is a huge mountain of goats."
 }, (err, campground) => {
     if(err) {
         console.log(`ERROR OCCURED: ${err}`);
@@ -42,20 +44,22 @@ app.get('/campgrounds', (req, res) => {
             if(err) {
                 console.log(err);
             } else {
-                res.render('campgrounds', { campgrounds: allCampgrounds });
+                res.render('index', { campgrounds: allCampgrounds });
             }
         });
 });
 
 app.post('/campgrounds', (req, res) => {
-	// get data from form and add to campgrounds array
+    // get data from form and add to campgrounds array
 	const name = req.body.name;
 	const image = req.body.image;
+    const description = req.body.description;
 
     // Create a new campground and save to DB
     Campground.create({
         name: name,
-        image: image
+        image: image,
+        description: description
     }, (err, newlyCreated) => {
         if(err) {
             console.log(err);
@@ -69,6 +73,18 @@ app.post('/campgrounds', (req, res) => {
 
 app.get('/campgrounds/new', (req, res) => {
 	res.render('new');
+});
+
+// Show
+app.get('/campgrounds/:id', (req ,res) => {
+    //find the campground with provided ID
+    Campground.findById(req.params.id, (err, foundCampground) => {
+        if(err) console.log(err);
+        else {
+            //render show template with that campground
+            res.render('show', { campground: foundCampground });
+        }
+    });
 });
 
 app.listen(PORT, () => { 
