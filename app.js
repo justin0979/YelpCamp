@@ -3,7 +3,9 @@ const app           = express();
 const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
 const Campground    = require('./models/campground');
+const seedDB        = require('./seeds');
 
+seedDB();
 mongoose.connect('mongodb://mongo:27017/yelp_camp', { useNewUrlParser: true });
 
 const PORT = 3000;
@@ -12,20 +14,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-/*
-Campground.create({
-    name: "Mountain Goat Pass",
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJiZz-OBNf8A08S6XT0fhJCQQM3Kq3JndXQ8IWdsEJ6js5U-1e' ,
-    description: "This is a huge mountain of goats."
-}, (err, campground) => {
-    if(err) {
-        console.log(`ERROR OCCURED: ${err}`);
-    } else {
-        console.log( "newly Created Campground");
-        console.log(campground);
-    }
-});
-*/
 app.get('/', (req, res) => {
 	res.render('landing');
 });
@@ -73,7 +61,7 @@ app.get('/campgrounds/new', (req, res) => {
 // Show Route
 app.get('/campgrounds/:id', (req ,res) => {
     //find the campground with provided ID
-    Campground.findById(req.params.id, (err, foundCampground) => {
+    Campground.findById(req.params.id).populate('comments').exec((err, foundCampground) => {
         if(err) console.log(err);
         else {
             //render show template with that campground
@@ -83,5 +71,9 @@ app.get('/campgrounds/:id', (req ,res) => {
 });
 
 app.listen(PORT, () => { 
-	console.log(`YelpCamp Server listening on port ${PORT}, mapped locally to port ${PORT}.`)
+	console.log(`
+    
+    YelpCamp Server listening on port ${PORT}, mapped locally to port ${PORT}.
+    
+    `)
 });
