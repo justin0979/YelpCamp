@@ -3,7 +3,11 @@
 		"express": "x",
 		"ejs": "x",
 		"body-parser": "*",
-        "mongoose": "*"
+        "mongoose": "*",
+        "passport": "*",
+        "passport-local": "*",
+        "passport-local-mongoose": "*",
+        "express-session": "*"
 	},
 	"scripts": {
 		"start": "node app.js"
