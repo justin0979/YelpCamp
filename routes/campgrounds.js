@@ -2,6 +2,11 @@ const Campground = require('../models/campground.js'),
       express = require('express'),
       router = express.Router();
 
+function isLoggedIn(req, res, next) {
+  if(req.isAuthenticated()) return next();
+  res.redirect('/login');
+}
+
 // Index - show all campgrounds
 router.get('/', (req, res) => {
  Campground.find({})
@@ -14,27 +19,20 @@ router.get('/', (req, res) => {
 });
 
 // Create - add new campground to DB
-router.post('/', (req, res) => {
-  const name        = req.body.name,
-        image       = req.body.image,
-        description = req.body.description;
+router.post('/', isLoggedIn, (req, res) => {
+  const name          = req.body.name,
+        image         = req.body.image,
+        description   = req.body.description,
+        author        = { id: req.user._id, username: req.user.username }
+        newCampground = { name: name, image: image, description: description, author: author };
   
-  Campground.create({
-    name: name,
-    image: image,
-    description: description
-  })
+  Campground.create( newCampground )
   .then(newlyCreated => res.redirect('/campgrounds'))
   .catch(err => console.log(err));
-/*
-    .exec((err, newlyCreated) => {
-    if(err) console.log(err);
-    else res.redirect('/campgrounds');
-  });
-*/
 });
+
 // New Route
-router.get('/new', (req, res) => res.render('campgrounds/new'));
+router.get('/new', isLoggedIn,(req, res) => res.render('campgrounds/new'));
 
 // Show Route
 router.get('/:id', (req, res) => {
