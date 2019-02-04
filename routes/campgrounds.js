@@ -24,12 +24,15 @@ router.post('/', (req, res) => {
     image: image,
     description: description
   })
-  .exec((err, newlyCreated) => {
+  .then(newlyCreated => res.redirect('/campgrounds'))
+  .catch(err => console.log(err));
+/*
+    .exec((err, newlyCreated) => {
     if(err) console.log(err);
     else res.redirect('/campgrounds');
   });
+*/
 });
-
 // New Route
 router.get('/new', (req, res) => res.render('campgrounds/new'));
 
