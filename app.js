@@ -11,9 +11,10 @@ const express               = require('express'),
       User                  = require('./models/user'),
       expressSession        = require('express-session');
 
-const commentRoutes    = require('./routes/comments'),
-      campgroundRoutes = require('./routes/campgrounds'),
-      indexRoutes       = require('./routes/index');
+// requiring routes
+const commentRoutes         = require('./routes/comments'),
+      campgroundRoutes      = require('./routes/campgrounds'),
+      indexRoutes           = require('./routes/index');
 
 mongoose.connect('mongodb://mongo:27017/yelp_camp', { useNewUrlParser: true });
 
@@ -32,7 +33,7 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 })
@@ -44,8 +45,8 @@ passport.deserializeUser(User.deserializeUser());
 seedDB();
 
 app.use(indexRoutes);
-app.use(campgroundRoutes);
-app.use(commentRoutes);
+app.use("/campgrounds", campgroundRoutes);
+app.use("/campgrounds/:id/comments", commentRoutes);
 
 
 app.listen(PORT, () => { 
