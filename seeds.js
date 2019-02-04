@@ -22,7 +22,7 @@ const data = [
 
 function seedDB() {
     Campground.deleteMany({}, (err) => {
-        if(err) console.log(err);
+      if(err) console.log(err);
         console.log('removed campgrounds!');
         // add a few campgrounds
         data.forEach(seed => {
