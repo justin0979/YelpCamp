@@ -7,15 +7,31 @@ function isLoggedIn(req, res, next) {
   res.redirect('/login');
 }
 
+function checkCampgroundOwnership(req, res, next) {
+  if(req.isAuthenticated()) {
+    Campground.findById(req.params.id)
+    .then(campground => {
+      if(campground.author.id.equals(req.user._id)) {
+        next()
+      } else {
+        res.redirect('back');
+      }
+    })
+    .catch(err => res.redirect('back'));
+  } else {
+    res.redirect('back');
+  }
+}
+
 // Index - show all campgrounds
 router.get('/', (req, res) => {
  Campground.find({})
-           .exec((err, allCampgrounds) => {
-            if(err) console.log(err);
-            else {
-              res.render('campgrounds/index', { campgrounds: allCampgrounds });
-            }
-           }); 
+   .exec((err, allCampgrounds) => {
+    if(err) console.log(err);
+    else {
+      res.render('campgrounds/index', { campgrounds: allCampgrounds });
+    }
+   }); 
 });
 
 // Create - add new campground to DB
@@ -42,6 +58,28 @@ router.get('/:id', (req, res) => {
       if(err) console.log(err)
       else res.render('campgrounds/show', { campground: foundCampground });
     });
+});
+
+// Edit Campground route
+router.get('/:id/edit', checkCampgroundOwnership, (req, res) => {
+  // is user logged in
+    Campground.findById(req.params.id)
+    .then(campground => res.render('campgrounds/edit', { campground: campground }))
+    .catch(err => console.log(err))
+});
+
+// Update route
+router.put("/:id", (req, res) => {
+  Campground.findByIdAndUpdate(req.params.id, req.body.campground)
+  .then(updatedCampground => res.redirect(`/campgrounds/${req.params.id}`))
+  .catch(err => res.redirect('/campgrounds'));
+})
+
+// Destroy route
+router.delete('/:id', (req, res) => {
+  Campground.findByIdAndRemove(req.params.id)
+  .then(deletedCampground => res.redirect('/campgrounds'))
+  .catch(err => res.redirect('/campgrounds'));
 });
 
 module.exports = router;

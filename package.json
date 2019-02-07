@@ -7,7 +7,8 @@
         "passport": "*",
         "passport-local": "*",
         "passport-local-mongoose": "*",
-        "express-session": "*"
+        "express-session": "*",
+        "method-override": "*"
 	},
 	"scripts": {
 		"start": "node app.js"
