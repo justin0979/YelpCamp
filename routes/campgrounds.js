@@ -44,4 +44,17 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// Edit Campground route
+router.get('/:id/edit', (req, res) => {
+  Campground.findById(req.params.id)
+  .then(campground => res.render('campgrounds/edit', { campground: campground }))
+  .catch(err => console.log(err))
+});
+
+router.put("/:id", (req, res) => {
+  Campground.findByIdAndUpdate(req.params.id, req.body.campground)
+  .then(updatedCampground => res.redirect(`/campgrounds/${req.params.id}`))
+  .catch(err => res.redirect('/campgrounds'));
+})
+
 module.exports = router;
