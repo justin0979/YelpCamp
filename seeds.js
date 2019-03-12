@@ -40,12 +40,12 @@ function seedDB() {
                             campground.comments.push(comment);
                             campground.save();
                             console.log('Created new comment.');
-                        };
+                        }
                     });
                 }
             });
         });
     });
-};
+}
 
 module.exports = seedDB;
