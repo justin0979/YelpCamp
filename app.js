@@ -51,10 +51,12 @@ app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
 
-app.listen(PORT, () => { 
+let server = app.listen(PORT, () => { 
 	console.log(`
     
     YelpCamp Server listening on port ${PORT}, mapped locally to port ${PORT}.
     
     `)
 });
+
+module.exports = server
