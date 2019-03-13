@@ -25,11 +25,13 @@ app.use(methodOverride('_method'));
 app.use(flash());
 
 // Passport Configuration
-app.use(expressSession({
+app.use(
+  expressSession({
     secret: 'All the camps',
     resave: false,
     saveUninitialized: false
-  }));
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -39,6 +41,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  res.locals.message = req.flash('error');
   next();
 });
 
