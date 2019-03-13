@@ -68,10 +68,14 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
           campground.save();
           res.redirect(`/campgrounds/${campground._id}`);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          req.flash('error', 'Something went horribly wrong...well, maybe not horribly.');
+          console.log(err);
+        });
     })
     .catch(err => {
       console.log(err);
+      req.flash('success', 'Your comment was successfully added.');
       res.redirect('/campground');
     });
 });
@@ -93,7 +97,10 @@ router.put('/:comment_id', middleware.checkCommentOwnership, (req, res) => {
 // Comments Destroy route
 router.delete('/:comment_id', middleware.checkCommentOwnership, (req, res) => {
   Comment.findByIdAndRemove(req.params.comment_id)
-    .then(() => res.redirect(`/campgrounds/${req.params.id}`))
+    .then(() => {
+      req.flash('success', 'Bogey Terminated!');
+      res.redirect(`/campgrounds/${req.params.id}`);
+    })
     .catch(() => res.redirect('back'));
 });
 

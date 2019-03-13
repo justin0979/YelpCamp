@@ -49,15 +49,15 @@ router.get('/:id/edit', middleware.checkCampgroundOwnership, (req, res) => {
 // Update route
 router.put('/:id', middleware.checkCampgroundOwnership, (req, res) => {
   Campground.findByIdAndUpdate(req.params.id, req.body.campground)
-    .then(updatedCampground => res.redirect(`/campgrounds/${req.params.id}`))
-    .catch(err => res.redirect('/campgrounds'));
+    .then(() => res.redirect(`/campgrounds/${req.params.id}`))
+    .catch(() => res.redirect('/campgrounds'));
 });
 
 // Destroy route
 router.delete('/:id', middleware.checkCampgroundOwnership, (req, res) => {
   Campground.findByIdAndRemove(req.params.id)
-    .then(deletedCampground => res.redirect('/campgrounds'))
-    .catch(err => res.redirect('/campgrounds'));
+    .then(() => res.redirect('/campgrounds'))
+    .catch(() => res.redirect('/campgrounds'));
 });
 
 module.exports = router;
