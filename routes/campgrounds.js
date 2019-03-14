@@ -16,10 +16,11 @@ router.get('/', (req, res) => {
 // Create - add new campground to DB
 router.post('/', middleware.isLoggedIn, (req, res) => {
   const name = req.body.name,
+    price = req.body.price,
     image = req.body.image,
     description = req.body.description,
     author = {id: req.user._id, username: req.user.username},
-    newCampground = {name: name, image: image, description: description, author: author};
+    newCampground = {name: name, price: price, image: image, description: description, author: author};
 
   Campground.create(newCampground)
     .then(() => res.redirect('/campgrounds'))

@@ -16,7 +16,7 @@ const commentRoutes = require('./routes/comments'),
 
 mongoose.connect('mongodb://mongo:27017/yelp_camp', {useNewUrlParser: true});
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
