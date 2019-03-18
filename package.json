@@ -21,5 +21,20 @@
   "devDependencies": {
     "jasmine": "^3.3.1",
     "nodemon": "^1.18.10"
-  }
+  },
+  "name": "YelpCamp",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justin0979/YelpCamp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justin0979/YelpCamp/issues"
+  },
+  "homepage": "https://github.com/justin0979/YelpCamp#readme",
+  "description": ""
 }
